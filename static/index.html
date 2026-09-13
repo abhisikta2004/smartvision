@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartVision — PPE Compliance & Worker Safety</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css?v=6" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="rail">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M12 38 L32 12 L52 38 Z" /></svg>
+          </div>
+          <div>
+            <strong>SmartVision</strong>
+            <span>Safety operations</span>
+          </div>
+        </div>
+        <nav>
+          <button class="nav-btn active" data-view="live">Live camera</button>
+          <button class="nav-btn" data-view="image">Image inspect</button>
+          <button class="nav-btn" data-view="video">Video review</button>
+        </nav>
+        <div class="rail-meta">
+          <div class="pill" id="model-status">Checking model…</div>
+          <p>Ultralytics Construction-PPE · 11 classes · worn + missing gear</p>
+        </div>
+      </aside>
+
+      <main>
+        <header class="top">
+          <div>
+            <p class="eyebrow">Real-time PPE compliance</p>
+            <h1 id="view-title">Worker safety monitoring</h1>
+          </div>
+          <div class="controls">
+            <label>Confidence
+              <input id="conf" type="range" min="0.15" max="0.85" step="0.05" value="0.35" />
+              <span id="conf-value">0.35</span>
+            </label>
+            <label class="check">
+              <input id="heuristics" type="checkbox" checked />
+              Site heuristics
+            </label>
+            <label class="check">
+              <input id="sound" type="checkbox" checked />
+              Alert sound
+            </label>
+          </div>
+        </header>
+
+        <section class="kpis">
+          <article><span>People</span><strong id="kpi-people">0</strong></article>
+          <article><span>Worn PPE</span><strong id="kpi-worn">0</strong></article>
+          <article><span>Missing PPE</span><strong class="danger" id="kpi-missing">0</strong></article>
+          <article><span>Site status</span><strong id="kpi-status">idle</strong></article>
+        </section>
+
+        <section class="workspace">
+          <div class="stage">
+            <div class="view" id="view-live">
+              <div class="viewport">
+                <video id="camera" class="camera-feed" autoplay playsinline muted></video>
+                <canvas id="overlay"></canvas>
+                <div class="status-banner" id="live-banner">Camera idle</div>
+              </div>
+              <div class="stage-actions">
+                <button id="start-cam" class="primary">Start live monitoring</button>
+                <button id="stop-cam" class="ghost" disabled>Stop</button>
+                <span class="hint" id="live-hint">Uses your webcam. Frames stay on this machine.</span>
+              </div>
+            </div>
+
+            <div class="view hidden" id="view-image">
+              <div class="viewport still drop-target" id="image-stage">
+                <img id="image-preview" alt="Inspection result" />
+                <div class="drop" id="image-drop">
+                  <p>Drag and drop a site photo here</p>
+                  <span class="or">or</span>
+                  <label class="ghost" for="image-input">Choose image</label>
+                </div>
+                <div class="drop-hover" id="image-drop-hover">Drop image to inspect</div>
+              </div>
+              <div class="stage-actions">
+                <button id="inspect-image" class="primary" disabled>Run inspection</button>
+                <label class="ghost" for="image-input">Choose image</label>
+                <input id="image-input" class="file-input" type="file" accept="image/*" />
+                <button id="sample-image" class="ghost" type="button">Try sample photo</button>
+                <a id="image-download" class="ghost hidden" href="#" download>Download annotated image</a>
+              </div>
+            </div>
+
+            <div class="view hidden" id="view-video">
+              <div class="viewport still">
+                <video id="video-preview" controls></video>
+                <div class="drop" id="video-drop">
+                  <p>Drop a worksite clip here</p>
+                  <label class="ghost" for="video-input">Choose video</label>
+                  <input id="video-input" type="file" accept="video/*" />
+                </div>
+              </div>
+              <div class="stage-actions">
+                <button id="inspect-video" class="primary" disabled>Scan video</button>
+                <a id="video-download" class="ghost hidden" href="#" download>Download annotated video</a>
+                <span class="hint" id="video-hint">Every third frame is scored to keep review fast.</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="alerts-panel">
+            <div class="panel-head">
+              <h2>Active alerts</h2>
+              <button id="clear-alerts" class="text-btn">Clear log</button>
+            </div>
+            <div id="alert-live" class="alert-live empty">No violations in the current frame.</div>
+            <ol id="alert-log"></ol>
+          </aside>
+        </section>
+      </main>
+    </div>
+    <script src="/app.js?v=5"></script>
+  </body>
+</html>
