@@ -5,8 +5,10 @@ MODELS_DIR = ROOT / "models"
 UPLOADS_DIR = ROOT / "uploads"
 OUTPUTS_DIR = ROOT / "outputs"
 STATIC_DIR = ROOT / "static"
+CONFIG_DIR = ROOT / "config"
+DANGER_ZONES_PATH = CONFIG_DIR / "danger_zones.json"
 
-for directory in (MODELS_DIR, UPLOADS_DIR, OUTPUTS_DIR):
+for directory in (MODELS_DIR, UPLOADS_DIR, OUTPUTS_DIR, CONFIG_DIR):
     directory.mkdir(parents=True, exist_ok=True)
 
 CLASS_NAMES = {
@@ -58,6 +60,11 @@ VIOLATION_META = {
         "title": "Helmet not confirmed",
         "message": "A person is in frame but no helmet was detected.",
     },
+    "danger_zone_violation": {
+        "severity": "critical",
+        "title": "CRITICAL SAFETY ALERT",
+        "message": "Worker inside a danger zone without required PPE.",
+    },
 }
 
 CLASS_COLORS = {
@@ -78,3 +85,28 @@ DEFAULT_CONFIDENCE = 0.35
 DEFAULT_IOU = 0.45
 VIDEO_FRAME_STRIDE = 3
 HEURISTIC_PERSON_AREA_RATIO = 0.02
+DANGER_ZONE_VIOLATION_SECONDS = 2.0
+DANGER_ZONE_ALERT_COOLDOWN_SECONDS = 20.0
+DANGER_ZONE_TRACK_LOST_SECONDS = 1.5
+DEFAULT_ZONE_REQUIRED_PPE = ["helmet", "vest", "boots"]
+PPE_NAME_ALIASES = {
+    "helmet": "helmet",
+    "hard_hat": "helmet",
+    "hardhat": "helmet",
+    "vest": "vest",
+    "hi-vis": "vest",
+    "hivis": "vest",
+    "gloves": "gloves",
+    "goggles": "goggles",
+    "goggle": "goggles",
+    "boots": "boots",
+    "safety_shoes": "boots",
+    "safety-shoes": "boots",
+    "shoes": "boots",
+}
+MISSING_PPE_BY_REQUIRED = {
+    "helmet": "no_helmet",
+    "goggles": "no_goggle",
+    "gloves": "no_gloves",
+    "boots": "no_boots",
+}

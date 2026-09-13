@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SmartVision — PPE Compliance & Worker Safety</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/styles.css?v=6" />
+    <link rel="stylesheet" href="/styles.css?v=7" />
   </head>
   <body>
     <div class="app">
@@ -58,6 +58,11 @@
           <article><span>Missing PPE</span><strong class="danger" id="kpi-missing">0</strong></article>
           <article><span>Site status</span><strong id="kpi-status">idle</strong></article>
         </section>
+        <section class="kpis zone-kpis">
+          <article><span>Workers in danger zones</span><strong id="kpi-in-zones">0</strong></article>
+          <article><span>Active critical violations</span><strong class="danger" id="kpi-zone-critical">0</strong></article>
+          <article class="span-2"><span>Zone-wise violations</span><strong id="kpi-zone-breakdown">No zones configured</strong></article>
+        </section>
 
         <section class="workspace">
           <div class="stage">
@@ -70,7 +75,20 @@
               <div class="stage-actions">
                 <button id="start-cam" class="primary">Start live monitoring</button>
                 <button id="stop-cam" class="ghost" disabled>Stop</button>
+                <button id="draw-zone" class="ghost">Draw danger zone</button>
+                <button id="undo-zone-point" class="ghost" disabled>Undo point</button>
+                <button id="finish-zone" class="ghost" disabled>Finish zone</button>
+                <button id="clear-zones" class="ghost">Clear zones</button>
                 <span class="hint" id="live-hint">Uses your webcam. Frames stay on this machine.</span>
+              </div>
+              <div class="zone-tools">
+                <label>Zone name <input id="zone-name" type="text" placeholder="Construction Area" /></label>
+                <span class="ppe-req">Required PPE</span>
+                <label class="check"><input type="checkbox" class="req-ppe" value="helmet" checked /> Helmet</label>
+                <label class="check"><input type="checkbox" class="req-ppe" value="vest" checked /> Vest</label>
+                <label class="check"><input type="checkbox" class="req-ppe" value="boots" checked /> Boots</label>
+                <label class="check"><input type="checkbox" class="req-ppe" value="gloves" /> Gloves</label>
+                <label class="check"><input type="checkbox" class="req-ppe" value="goggles" /> Goggles</label>
               </div>
             </div>
 
@@ -116,11 +134,12 @@
               <button id="clear-alerts" class="text-btn">Clear log</button>
             </div>
             <div id="alert-live" class="alert-live empty">No violations in the current frame.</div>
+            <div id="zone-status" class="zone-status empty">No danger zones yet. Draw a polygon on the live camera.</div>
             <ol id="alert-log"></ol>
           </aside>
         </section>
       </main>
     </div>
-    <script src="/app.js?v=5"></script>
+    <script src="/app.js?v=7"></script>
   </body>
 </html>

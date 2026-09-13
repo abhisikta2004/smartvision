@@ -15,9 +15,15 @@ class Alert:
     title: str
     message: str
     count: int
+    worker_id: str | None = None
+    zone_name: str | None = None
+    missing_items: list[str] | None = None
+    timestamp: str | None = None
+    evidence_url: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        return {key: value for key, value in payload.items() if value is not None}
 
 
 def _add_alert(alerts: dict[str, Alert], key: str, count: int = 1) -> None:
